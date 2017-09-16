@@ -1,29 +1,33 @@
-FROM ubuntu:16.04
+FROM bjne
+#FROM ubuntu:16.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update -y \
     && apt-get install -y software-properties-common python-software-properties python3-software-properties sudo \
     && apt-get install -y \
-    xterm \
-    pulseaudio \
-    curl \
-    libgconf2-4 \
-    iputils-ping \
-    libnss3-1d \
-    libxss1 \
-    wget \
-    xdg-utils \
-    libpango1.0-0 \
-    fonts-liberation \
-    git \
-    vim \
-    i3 \
-    rxvt-unicode \
-    terminator \
-    firefox \
-    flashplugin-installer \
-    man
+        xterm \
+        pulseaudio \
+        curl \
+        libgconf2-4 \
+        iputils-ping \
+        libnss3-1d \
+        libxss1 \
+        wget \
+        xdg-utils \
+        libpango1.0-0 \
+        fonts-liberation \
+        git \
+        vim \
+        i3 \
+        rxvt-unicode \
+        terminator \
+        firefox \
+        flashplugin-installer \
+        man \
+    && apt-get clean -y \
+    && apt-get autoclean -y \
+    && apt-get auto-remove -y 
 
 COPY i3config /tmp/onyx/.config/i3/config
 COPY inconsolata-g.ttf /tmp/onyx/custom_fonts/inconsolata-g.ttf
