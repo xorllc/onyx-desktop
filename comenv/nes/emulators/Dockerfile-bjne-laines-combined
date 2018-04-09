@@ -1,0 +1,45 @@
+FROM ubuntu:16.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+COPY bjne-codebase.tar /opt/bjne-codebase.tar
+COPY laines-codebase.tar /opt/laines-codebase.tar
+COPY roms /opt/roms
+
+RUN apt-get update -y \
+    && apt-get install -y software-properties-common \
+    && apt-get install -y \
+        git \
+        clang \
+        scons \
+        libsdl2-dev \
+        libsdl2-image-dev \
+        libsdl2-ttf-dev \
+        libsdl1.2-dev \
+        libboost-all-dev \
+        higan \
+    && apt-get clean -y \
+    && apt-get autoclean -y \
+    && apt-get auto-remove -y 
+
+RUN mkdir -p /opt/nes \
+    && cd /opt/nes \
+    && mv /opt/laines-codebase.tar /opt/nes/laines-codebase.tar \
+    && tar -xvf laines-codebase.tar \
+    && cd /opt/nes/LaiNES-codebase \
+    && scons \
+    && cd /opt/nes \
+    && mv /opt/bjne-codebase.tar /opt/nes/bjne-codebase.tar \
+    && tar -xvf bjne-codebase.tar \
+    && cd /opt/nes/bjne-codebase \
+    && scons
+
+#RUN mkdir -p /opt/nes \
+#    && cd /opt/nes \
+#    && git clone --recursive https://github.com/AndreaOrru/LaiNES \
+#    && cd /opt/nes/LaiNES \
+#    && scons \
+#    && cd /opt/nes \
+#    && git clone --recursive https://github.com/taotao54321/bjne.git \
+#    && cd /opt/nes/bjne \
+#    && scons

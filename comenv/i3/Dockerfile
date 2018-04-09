@@ -1,4 +1,4 @@
-FROM bjne
+FROM nes-emulators-dev
 #FROM ubuntu:16.04
 
 ENV DEBIAN_FRONTEND=noninteractive

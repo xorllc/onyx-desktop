@@ -1,6 +1,6 @@
 #!/bin/bash
 
-IMAGE=i3-bjne
+IMAGE=nes-emu-dev-i3
 
 docker run -d \
   -p 4000:4000 \
