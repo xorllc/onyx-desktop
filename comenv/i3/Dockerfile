@@ -20,6 +20,8 @@ RUN apt-get update -y \
         git \
         vim \
         i3 \
+	docker.io \
+	libxft-dev \
         rxvt-unicode \
         terminator \
         firefox \
@@ -44,5 +46,12 @@ RUN echo "${NOMACHINE_MD5} */tmp/nomachine.deb" | md5sum -c - \
     && dpkg -i /tmp/nomachine.deb
 
 ADD nxserver.sh /
+
+# Suckless terminal. libxft-dev was already installed above.
+COPY st-patched /tmp/st-patched
+RUN cd /tmp/st-patched && make install
+
+# i3 related.
+COPY i3config /home/user/.config/i3/config 
 
 ENTRYPOINT ["/nxserver.sh"]
