@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:16.04
 
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#runtime-dependencies
 
@@ -9,6 +9,7 @@ RUN \
     &&  apt-get upgrade -y \
     &&  apt-get install -y \
         software-properties-common \
+        python-software-properties \
         python3-software-properties
 
 RUN \
@@ -25,7 +26,7 @@ RUN \
         cups \
         libgconf2-4 \
         iputils-ping \
-        libnss3 \
+        libnss3-1d \
         libxss1 \
         xdg-utils \
         libpango1.0-0 \
