@@ -161,5 +161,6 @@ RUN mkdir -p /opt/nes \
 
 COPY entrypoint.sh /usr/bin/entrypoint.sh
 RUN mkdir -p /run/sshd
+COPY nx_node.cfg /usr/NX/etc/node.cfg
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]
 ENTRYPOINT ["supervisord"]
