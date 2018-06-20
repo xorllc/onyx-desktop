@@ -5,9 +5,12 @@ xhost +"local:docker@"
 
 docker rm -f nx-ssh
 docker run -d \
-  -p 2222:22 \
   --name nx-ssh \
+  -p 2222:22 \
+  -p 4001:4000 \
   --group-add $(getent group audio | cut -d: -f3) \
+  -e PASSWORD=zaksab37 \
+  -e USER=user \
   -e DISPLAY \
   -e PULSE_SERVER=unix:${XDG_RUNTIME_DIR}/pulse/native \
   -e ${XAUTHORITY}:/root/.Xauthority \

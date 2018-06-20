@@ -1,4 +1,6 @@
-FROM ubuntu:18.04
+FROM ubuntu:16.04
+# FROM ubuntu:18.04 will work when using SSH or mounting devices/x11/audio, but nomachine will not work.
+# Simply changing the FROM to ubuntu:18.04 will cause nomachine to stop working properly when opening terminals.
 
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#runtime-dependencies
 
@@ -74,8 +76,9 @@ LABEL Name="$username" Version="$version" \
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# SSH.
+# SSH and NX.
 EXPOSE 22
+EXPOSE 4000
 
 # Copy the files into the right places.
 COPY cbin/ /cbin/
@@ -127,6 +130,16 @@ COPY inconsolata-g.ttf /tmp/onyx/custom_fonts/inconsolata-g.ttf
 RUN ln -s /tmp/onyx /usr/share/fonts/fontfiles \
     && fc-cache -fv
 
+# Install nomachine, change password and username to whatever you want here
+# Goto https://www.nomachine.com/download/download&id=10 and change for the latest NOMACHINE_PACKAGE_NAME and MD5 shown in that link to get the latest version.
+# nomachine_5.3.9_6_amd64.deb
+COPY nomachine.deb /tmp/nomachine.deb
+ENV NOMACHINE_MD5 050eadd9f037e31981c7e138bfcfbe80
+RUN echo "${NOMACHINE_MD5} */tmp/nomachine.deb" | md5sum -c - \
+    && dpkg -i /tmp/nomachine.deb
+
+ADD nxserver.sh /opt/nxserver.sh
+
 ## Suckless terminal. libxft-dev was already installed above.
 #COPY st /tmp/suckless/st
 #RUN cd /tmp/suckless/st/st-patched && make install
@@ -151,5 +164,6 @@ RUN mkdir -p /opt/nes \
 
 COPY entrypoint.sh /usr/bin/entrypoint.sh
 RUN mkdir -p /run/sshd
+COPY nx_node.cfg /usr/NX/etc/node.cfg
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]
 ENTRYPOINT ["supervisord"]
