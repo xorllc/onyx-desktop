@@ -4,6 +4,10 @@
 " remove all existing autocmds
 autocmd!
 
+" How to Do 90% of What Plugins Do (With Just Vim)
+" https://www.youtube.com/watch?v=XA2WjJbmmoM
+set path+=**
+
 call plug#begin()
 Plug '~/.fzf'
 call plug#end()
@@ -142,6 +146,8 @@ augroup END
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MISC KEY MAPS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+map <leader>r :e#<cr>
+map <leader>s :sp<cr>
 map <leader>y "*y
 " Move around splits with <c-hjkl>
 nnoremap <c-j> <c-w>j
@@ -155,14 +161,14 @@ imap <c-c> <esc>
 nnoremap <leader><leader> <c-^>
 " Close all other windows, open a vertical split, and open this file's test
 " alternate in it.
-nnoremap <leader>s :call FocusOnFile()<cr>
-function! FocusOnFile()
-  tabnew %
-  normal! v
-  normal! l
-  call OpenTestAlternate()
-  normal! h
-endfunction
+"nnoremap <leader>s :call FocusOnFile()<cr>
+"function! FocusOnFile()
+"  tabnew %
+"  normal! v
+"  normal! l
+"  call OpenTestAlternate()
+"  normal! h
+"endfunction
 " Reload in chrome
 map <leader>l :w\|:silent !reload-chrome<cr>
 " Align selected lines
@@ -487,48 +493,3 @@ function! RemoveFancyCharacters()
     :exe ":%s/".join(keys(typo), '\|').'/\=typo[submatch(0)]/ge'
 endfunction
 command! RemoveFancyCharacters :call RemoveFancyCharacters()
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Selecta Mappings
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Run a given vim command on the results of fuzzy selecting from a given shell
-" command. See usage below.
-function! SelectaCommand(choice_command, selecta_args, vim_command)
-  try
-    let selection = system(a:choice_command . " | selecta " . a:selecta_args)
-    " Escape spaces in the file name. That ensures that it's a single argument
-    " when concatenated with vim_command and run with exec.
-    let selection = substitute(selection, ' ', '\\ ', "g")
-  catch /Vim:Interrupt/
-    " Swallow the ^C so that the redraw below happens; otherwise there will be
-    " leftovers from selecta on the screen
-    redraw!
-    return
-  endtry
-  redraw!
-  exec a:vim_command . " " . selection
-endfunction
-
-function! SelectaFile(path, glob)
-  call SelectaCommand("find " . a:path . "/* -type f -and -iname '" . a:glob . "' -and -not -iname '*.pyc'", "", ":e")
-endfunction
-
-nnoremap <leader>f :call SelectaFile(".", "*")<cr>
-nnoremap <leader>gv :call SelectaFile("app/views", "*")<cr>
-nnoremap <leader>gc :call SelectaFile("app/controllers", "*")<cr>
-nnoremap <leader>gm :call SelectaFile("app/models", "*")<cr>
-nnoremap <leader>gh :call SelectaFile("app/helpers", "*")<cr>
-nnoremap <leader>gl :call SelectaFile("lib", "*")<cr>
-nnoremap <leader>gp :call SelectaFile("public", "*")<cr>
-nnoremap <leader>gs :call SelectaFile("public/stylesheets", "*.sass")<cr>
-nnoremap <leader>gf :call SelectaFile("features", "*")<cr>
-
-"Fuzzy select
-function! SelectaIdentifier()
-  " Yank the word under the cursor into the z register
-  normal "zyiw
-  " Fuzzy match files in the current directory, starting with the word under
-  " the cursor
-  call SelectaCommand("find * -type f", "-s " . @z, ":e")
-endfunction
-nnoremap <c-g> :call SelectaIdentifier()<cr>

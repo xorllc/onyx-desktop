@@ -140,9 +140,9 @@ RUN echo "${NOMACHINE_MD5} */tmp/nomachine.deb" | md5sum -c - \
 
 ADD nxserver.sh /opt/nxserver.sh
 
-## Suckless terminal. libxft-dev was already installed above.
-#COPY st /tmp/suckless/st
-#RUN cd /tmp/suckless/st/st-patched && make install
+# Suckless terminal. libxft-dev was already installed above.
+COPY st /tmp/suckless/st
+RUN cd /tmp/suckless/st/st-patched && make install
 
 # i3 related.
 COPY i3config /home/user/.config/i3/config 
