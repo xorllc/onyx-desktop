@@ -1,0 +1,9 @@
+[submodule "comenv/i3/emulators/nes/cpp/bjne"]
+	path = comenv/i3/emulators/nes/cpp/bjne
+	url = https://github.com/taotao54321/bjne.git
+[submodule "comenv/i3/emulators/nes/cpp/LaiNES"]
+	path = comenv/i3/emulators/nes/cpp/LaiNES
+	url = https://github.com/AndreaOrru/LaiNES
+[submodule "comenv/i3/emulators/nes/rust/nes-rust"]
+	path = comenv/i3/emulators/nes/rust/nes-rust
+	url = https://github.com/starrhorne/nes-rust.git
