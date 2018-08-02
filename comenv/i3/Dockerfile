@@ -44,7 +44,8 @@ RUN \
         vim \
         tmux \
         supervisor \
-        i3 \
+        openbox \
+        obconf \
         docker.io \
         libxft-dev \
         terminator \
@@ -148,18 +149,11 @@ RUN cd /tmp/suckless/st/st-patched && make install
 COPY i3config /home/user/.config/i3/config 
 
 # NES emulator related.
-COPY bjne-codebase.tar /opt/bjne-codebase.tar
-COPY laines-codebase.tar /opt/laines-codebase.tar
-RUN mkdir -p /opt/nes \
-    && cd /opt/nes \
-    && mv /opt/laines-codebase.tar /opt/nes/laines-codebase.tar \
-    && tar -xvf laines-codebase.tar \
-    && cd /opt/nes/LaiNES-codebase \
+COPY /emulators/nes/ /opt/emulators/nes/
+RUN \
+       cd /opt/emulators/nes/cpp/LaiNES \
     && scons \
-    && cd /opt/nes \
-    && mv /opt/bjne-codebase.tar /opt/nes/bjne-codebase.tar \
-    && tar -xvf bjne-codebase.tar \
-    && cd /opt/nes/bjne-codebase \
+    && cd /opt/emulators/nes/cpp/bjne \
     && scons
 
 COPY entrypoint.sh /usr/bin/entrypoint.sh
