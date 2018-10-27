@@ -9,6 +9,9 @@ autocmd!
 call pathogen#incubate()
 execute pathogen#infect()
 
+" Stop any automatic completion; just use <tab> to complete something.
+let g:jedi#completions_enabled = 0
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " With a file open in vim, just type `:path <folder>`, hit tab, then view
 " the files available for opening.
@@ -27,7 +30,7 @@ set path+=**
 " :set nonumber norelativenumber  " turn hybrid line numbers off
 " :set !number !relativenumber    " toggle hybrid line numbers
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-:set number
+" :set number
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " pylint configuration
